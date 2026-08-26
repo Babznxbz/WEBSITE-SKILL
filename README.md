@@ -1,69 +1,79 @@
 # ⚡ WEBSITE SKILL (Storefront Forge & Awwwards Engine)
 
-> An all-in-one, anti-AI-slop web design and e-commerce skill for AI coding agents (Claude Code, Antigravity, Windsurf, Gemini CLI, OpenCode).
+> An all-in-one, anti-AI-slop web design and e-commerce skill for AI coding agents (**Antigravity, Claude Code, Windsurf, Cursor, Gemini CLI, OpenCode**).
 > Systematically builds Dribbble / Awwwards-level websites with GSAP + Lenis scroll animations, Shopify-style shop architecture, dynamic hero patterns, color palette generation, and WCAG contrast verification.
 
 ---
 
-## 🌟 What Is Included
+## ⚡ 1-Step Universal Skill Installation
 
-This repository contains curated skills and agent configurations for building high-end websites:
-
-```
-.agents/
-└── skills/
-    ├── storefront-forge/           # 🔥 The Master Skill (9-phase web design engine)
-    │   ├── SKILL.md                # Main orchestrator (/website trigger)
-    │   ├── AGENTS.md               # Execution rules & agent guidance
-    │   ├── references/             # Hero, navbar, GSAP, typography, shop patterns
-    │   └── scripts/                # Contrast checker & palette generator scripts
-    ├── build-awwwards-quality-sites/
-    ├── animate/
-    ├── emil-design-eng/
-    ├── improve-animations/
-    └── review-animations/
-```
-
----
-
-## 🚀 Quick Start
-
-### For Claude Code / Antigravity / Windsurf / OpenCode
-
-Copy or clone the `.agents` folder into your project or global skills directory:
+### Option A: Per-Project Installation (Recommended for All Agents)
+Simply copy the `.agents` folder into your target website repository root:
 
 ```bash
-# Global installation for Claude Code / Antigravity
-cp -r .agents/skills/storefront-forge ~/.claude/skills/
+# Works in Antigravity, Claude Code, Windsurf, Cursor, OpenCode out of the box!
+cp -r .agents /path/to/your-project/
 ```
 
-### Triggering the Skill in Conversation
+---
 
-Simply invoke the `/website` trigger or ask your AI coding assistant:
+### Option B: Global Installation (Available in Every Workspace)
 
-- `/website build a luxury fashion store for Indian audience with INR prices`
-- `/website make an Awwwards-style portfolio for a design agency`
-- `Build a minimal furniture e-commerce store with Lenis smooth scroll`
+#### 🌐 For Antigravity (Google DeepMind Agent):
+```bash
+# Windows (PowerShell)
+xcopy /E /I .agents\skills\storefront-forge %USERPROFILE%\.gemini\config\skills\storefront-forge
+
+# macOS / Linux
+mkdir -p ~/.gemini/config/skills && cp -r .agents/skills/storefront-forge ~/.gemini/config/skills/
+```
+
+#### 🌐 For Claude Code:
+```bash
+mkdir -p ~/.claude/skills && cp -r .agents/skills/storefront-forge ~/.claude/skills/
+```
+
+#### 🌐 For Windsurf / Cursor / OpenCode:
+```bash
+# OpenCode / Windsurf standard agents path
+mkdir -p ~/.agents/skills && cp -r .agents/skills/storefront-forge ~/.agents/skills/
+```
 
 ---
 
-## 🎨 Storefront Forge Architecture
+## 🚀 How to Run (`/website`)
 
-When triggered, Storefront Forge executes a disciplined **9-Phase Pipeline**:
+Once installed, open your AI coding assistant in your project and type:
 
-1. **Phase 1: Parse Prompt** — Detect site type, audience, currency, and select hero/navbar patterns.
-2. **Phase 2: Art Direction** — Pick curated font pairing & generate WCAG-verified color tokens.
-3. **Phase 3: Architecture** — Define page map, product taxonomy, and section sequence.
-4. **Phase 4: Scaffold** — Setup Vite + React + TypeScript + Tailwind CSS + GSAP + Lenis.
-5. **Phase 5: Build Sections** — Construct hero, navbar, shop by category, product grids, cart drawer.
-6. **Phase 6: Wire Motion** — Lenis smooth scroll, section-wise color transitions (`data-section-color`), stagger reveals.
-7. **Phase 7: Polish** — Concentric border radius, layered shadows, hover states, image outlines.
-8. **Phase 8: Review** — Run anti-AI-slop quality check & contrast verification.
-9. **Phase 9: Build & Validate** — Type check and production build (`npm run build`).
+```text
+/website build a luxury fashion store for Indian audience with INR prices
+```
+
+Or simply ask in plain English:
+
+```text
+Build a motion-rich Awwwards quality shoe store with Lenis smooth scroll and section color transitions
+```
+
+The agent will automatically read `storefront-forge/SKILL.md` and execute the full **9-Phase Pipeline**:
+
+```
+┌─────────────────────────────────────────────────────┐
+│  PHASE 1 → Parse Prompt & Select Hero/Navbar        │
+│  PHASE 2 → Art Direction (Font pairing & Colors)    │
+│  PHASE 3 → Architecture (Page map & Taxonomy)       │
+│  PHASE 4 → Scaffold Vite + React + TS + Tailwind    │
+│  PHASE 5 → Build Sections (Hero, Shop, Cards, Cart) │
+│  PHASE 6 → Wire GSAP + Lenis Motion & Transitions   │
+│  PHASE 7 → UI Polish (Concentric radius, Shadows)   │
+│  PHASE 8 → Anti-AI-Slop Quality Gate Review         │
+│  PHASE 9 → Build & Validate (tsc + vite build)      │
+└─────────────────────────────────────────────────────┘
+```
 
 ---
 
-## 🛠️ Included Python Tools
+## 🛠️ Included Python Scripts
 
 | Script | Command | Purpose |
 |--------|---------|---------|
