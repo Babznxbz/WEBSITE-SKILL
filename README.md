@@ -5,38 +5,45 @@
 
 ---
 
-## ⚡ 1-Step Universal Skill Installation
+## 🚀 1-Line CLI Install (Works in Claude Code, Antigravity, Windsurf, OpenCode, Cursor)
 
-### Option A: Per-Project Installation (Recommended for All Agents)
-Simply copy the `.agents` folder into your target website repository root:
+Install all skills or `storefront-forge` directly via CLI:
 
 ```bash
-# Works in Antigravity, Claude Code, Windsurf, Cursor, OpenCode out of the box!
-cp -r .agents /path/to/your-project/
+npx skills add Babznxbz/WEBSITE-SKILL
+```
+
+Or install a specific skill:
+
+```bash
+npx skills add Babznxbz/WEBSITE-SKILL@storefront-forge
 ```
 
 ---
 
-### Option B: Global Installation (Available in Every Workspace)
+## ⚡ Manual Installation Options
+
+### Option A: Per-Project Installation
+Copy `.agents` or `skills` into your project root:
+
+```bash
+cp -r .agents /path/to/your-project/
+```
+
+### Option B: Global Agent Installation
 
 #### 🌐 For Antigravity (Google DeepMind Agent):
 ```bash
 # Windows (PowerShell)
-xcopy /E /I .agents\skills\storefront-forge %USERPROFILE%\.gemini\config\skills\storefront-forge
+xcopy /E /I skills\storefront-forge %USERPROFILE%\.gemini\config\skills\storefront-forge
 
 # macOS / Linux
-mkdir -p ~/.gemini/config/skills && cp -r .agents/skills/storefront-forge ~/.gemini/config/skills/
+mkdir -p ~/.gemini/config/skills && cp -r skills/storefront-forge ~/.gemini/config/skills/
 ```
 
 #### 🌐 For Claude Code:
 ```bash
-mkdir -p ~/.claude/skills && cp -r .agents/skills/storefront-forge ~/.claude/skills/
-```
-
-#### 🌐 For Windsurf / Cursor / OpenCode:
-```bash
-# OpenCode / Windsurf standard agents path
-mkdir -p ~/.agents/skills && cp -r .agents/skills/storefront-forge ~/.agents/skills/
+mkdir -p ~/.claude/skills && cp -r skills/storefront-forge ~/.claude/skills/
 ```
 
 ---
@@ -77,9 +84,9 @@ The agent will automatically read `storefront-forge/SKILL.md` and execute the fu
 
 | Script | Command | Purpose |
 |--------|---------|---------|
-| **Contrast Checker** | `python .agents/skills/storefront-forge/scripts/check_contrast.py "#FAF6F0" "#1F1713" "#E11D48"` | Calculates WCAG AA/AAA matrix for palette |
-| **Palette Generator** | `python .agents/skills/storefront-forge/scripts/generate_palette.py --mood luxury --verify` | Generates verified palette for mood |
-| **Palette Extractor** | `python .agents/skills/storefront-forge/scripts/extract_palette.py reference.jpg` | Samples dominant colors from reference image |
+| **Contrast Checker** | `python skills/storefront-forge/scripts/check_contrast.py "#FAF6F0" "#1F1713" "#E11D48"` | Calculates WCAG AA/AAA matrix for palette |
+| **Palette Generator** | `python skills/storefront-forge/scripts/generate_palette.py --mood luxury --verify` | Generates verified palette for mood |
+| **Palette Extractor** | `python skills/storefront-forge/scripts/extract_palette.py reference.jpg` | Samples dominant colors from reference image |
 
 ---
 
