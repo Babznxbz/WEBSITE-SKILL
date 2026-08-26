@@ -1,0 +1,45 @@
+@media (prefers-reduced-motion: reduce) {
+    .shoe-3d,
+    .shoe-image,
+    .hero-title,
+    .hero-subtitle,
+    .product-card,
+    .testimonial,
+    .feature-item,
+    .btn {
+        transition: none;
+        animation-duration: 0.01ms !important;
+    }
+    
+    .shoe-image {
+        transform: none !important;
+    }
+    
+    .hero-title {
+        transform: none !important;
+        opacity: 1 !important;
+    }
+    
+    .hero-subtitle {
+        transform: none !important;
+        opacity: 1 !important;
+    }
+}
+
+@media (hover: hover) and (pointer: fine) {
+    .btn:hover {
+        transform: translateY(-2px);
+    }
+    
+    .btn:active {
+        transform: scale(0.97);
+    }
+    
+    .product-card:hover {
+        transform: translateY(-10px);
+    }
+    
+    .feature-item:hover {
+        transform: translateY(-5px);
+    }
+}

@@ -1,0 +1,18 @@
+{
+    "name": "shoe-store-gsap",
+    "version": "1.0.0",
+    "description": "Shoe store with GSAP animations and elegant hero section",
+    "main": "index.html",
+    "scripts": {
+        "dev": "npx serve . -p 3000",
+        "preview": "npx serve . -p 3000",
+        "build": "echo 'No build required for static site'",
+        "lint": "npx eslint . --ext .js,.html --quiet || true",
+        "prettier": "npx prettier --write ."
+    },
+    "devDependencies": {
+        "prettier": "^3.0.0"
+    },
+    "author": "Design Engineering Team",
+    "license": "MIT"
+}

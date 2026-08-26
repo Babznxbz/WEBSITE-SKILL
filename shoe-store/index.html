@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Stride - Premium Shoe Store</title>
+    <link rel="stylesheet" href="styles.css">
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/gsap.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.2/ScrollTrigger.min.js"></script>
+</head>
+<body>
+    <nav class="navbar">
+        <div class="nav-container">
+            <div class="logo">Stride</div>
+            <ul class="nav-links">
+                <li><a href="#home">Home</a></li>
+                <li><a href="#shop">Shop</a></li>
+                <li><a href="#about">About</a></li>
+                <li><a href="#contact">Contact</a></li>
+            </ul>
+            <button class="cart-btn">
+                <span class="cart-icon">🛒</span>
+                <span class="cart-count">0</span>
+            </button>
+        </div>
+    </nav>
+
+    <section class="hero" id="home">
+        <div class="hero-content">
+            <h1 class="hero-title">Step Into Style</h1>
+            <p class="hero-subtitle">Premium footwear crafted for every step of your journey</p>
+            <div class="hero-buttons">
+                <button class="btn btn-primary">Shop Now</button>
+                <button class="btn btn-secondary">View Collection</button>
+            </div>
+            <div class="scroll-down">
+                <div class="scroll-indicator"></div>
+            </div>
+        </div>
+        <div class="hero-image">
+            <div class="shoe-3d">
+                <img src="https://images.unsplash.com/photo-1528786114226-a391a169aed5?w=600" alt="Premium shoes" class="shoe-image">
+            </div>
+        </div>
+    </section>
+
+    <section class="features">
+        <div class="container">
+            <h2 class="section-title">Why Choose Us</h2>
+            <div class="features-grid">
+                <div class="feature-item">
+                    <div class="feature-icon">👟</div>
+                    <h3>Quality Craftsmanship</h3>
+                    <p>Handcrafted with premium materials for lasting comfort.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🚚</div>
+                    <h3>Free Shipping</h3>
+                    <p>Fast delivery worldwide with free returns.</p>
+                </div>
+                <div class="feature-item">
+                    <div class="feature-icon">🌟</div>
+                    <h3>Style Guarantee</h3>
+                    <p>100% satisfaction guaranteed or your money back.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="products" id="shop">
+        <div class="container">
+            <h2 class="section-title">Featured Collection</h2>
+            <div class="products-grid">
+                <div class="product-card" data-product-id="1">
+                    <div class="product-badge">New</div>
+                    <img src="https://images.unsplash.com/photo-1519681393784-d120227f2150?w=400" alt="Running shoes">
+                    <h3>Running Pro</h3>
+                    <p class="price">$199.99</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="2">
+                    <div class="product-badge">Sale</div>
+                    <img src="https://images.unsplash.com/photo-1552627349-8653c39b03bb?w=400" alt="Sneakers">
+                    <h3>Luxury Sneakers</h3>
+                    <p class="price"><span class="original">$249.99</span> <span class="sale">$149.99</span></p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="3">
+                    <img src="https://images.unsplash.com/photo-1560250330-df4cbcf76766?w=400" alt="Casual shoes">
+                    <h3>Essentials</h3>
+                    <p class="price">$129.99</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+                <div class="product-card" data-product-id="4">
+                    <div class="product-badge">Limited</div>
+                    <img src="https://images.unsplash.com/photo-158730008361-735799347325?w=400" alt="Dress shoes">
+                    <h3>Dress Elite</h3>
+                    <p class="price">$299.99</p>
+                    <button class="add-to-cart">Add to Cart</button>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="about" id="about">
+        <div class="container">
+            <div class="about-content">
+                <div class="about-text">
+                    <h2>Our Story</h2>
+                    <p>Founded in 2015, Stride has revolutionized the shoe industry with our commitment to quality, style, and sustainability.</p>
+                    <p>Every pair is carefully crafted using eco-friendly materials and cutting-edge technology to provide unparalleled comfort and performance.</p>
+                    <button class="btn btn-primary">Learn More</button>
+                </div>
+                <div class="about-image">
+                    <img src="https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=600" alt="Our story">
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <section class="testimonials">
+        <div class="container">
+            <h2 class="section-title">What Our Customers Say</h2>
+            <div class="testimonials-slider">
+                <div class="testimonial">
+                    <p>"Best shoes I've ever owned! The comfort is unmatched and the style is on point."</p>
+                    <h4>- Sarah J.</h4>
+                </div>
+                <div class="testimonial">
+                    <p>"Fast shipping and excellent customer service. Will definitely be back!"</p>
+                    <h4>- Michael T.</h4>
+                </div>
+                <div class="testimonial">
+                    <p>"These shoes have changed my daily routine. So comfortable for work and play."</p>
+                    <h4>- Emily R.</h4>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer class="footer">
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-brand">
+                    <h3>Stride</h3>
+                    <p>Premium footwear for every occasion.</p>
+                </div>
+                <div class="footer-links">
+                    <h4>Quick Links</h4>
+                    <ul>
+                        <li><a href="#home">Home</a></li>
+                        <li><a href="#shop">Shop</a></li>
+                        <li><a href="#about">About</a></li>
+                        <li><a href="#contact">Contact</a></li>
+                    </ul>
+                </div>
+                <div class="footer-newsletter">
+                    <h4>Stay Updated</h4>
+                    <form id="newsletter-form">
+                        <input type="email" placeholder="Enter your email" required>
+                        <button type="submit">Subscribe</button>
+                    </form>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2024 Stride. All rights reserved.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="app.js"></script>
+</body>
+</html>

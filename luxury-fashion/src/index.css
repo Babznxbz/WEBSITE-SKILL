@@ -1,0 +1,117 @@
+@import url('https://fonts.googleapis.com/css2?family=Italiana&family=Playfair+Display:ital,wght@0,400;0,500;0,600;0,700;1,400;1,600&family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&family=Space+Mono:ital,wght@0,400;0,700;1,400&display=swap');
+
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  :root {
+    /* Primary Light Luxury Theme (Cream & Rich Espresso) */
+    --background: 38 45% 97%; /* #FAF6F0 */
+    --foreground: 20 25% 12%; /* #261D18 */
+
+    --card: 0 0% 100%; /* Pure Clean Card */
+    --card-foreground: 20 25% 12%;
+
+    --popover: 0 0% 100%;
+    --popover-foreground: 20 25% 12%;
+
+    --primary: 20 25% 12%; /* Dark Espresso Buttons */
+    --primary-foreground: 38 45% 97%;
+
+    --secondary: 35 25% 92%;
+    --secondary-foreground: 20 25% 12%;
+
+    --muted: 35 15% 90%;
+    --muted-foreground: 20 12% 45%;
+
+    --accent: 345 45% 92%; /* Soft Rose Accent */
+    --accent-foreground: 345 55% 20%;
+
+    --destructive: 0 72% 51%;
+    --destructive-foreground: 0 0% 100%;
+
+    --border: 35 18% 85%;
+    --input: 35 18% 85%;
+    --ring: 20 25% 12%;
+
+    --radius: 0.35rem;
+  }
+}
+
+@layer base {
+  * {
+    @apply border-border;
+  }
+  body {
+    @apply bg-background text-foreground antialiased;
+    font-family: 'Plus Jakarta Sans', sans-serif;
+  }
+  h1, h2, h3, h4 {
+    font-family: 'Italiana', 'Playfair Display', serif;
+  }
+}
+
+::selection {
+  background-color: #E2CEB9;
+  color: #1F1713;
+}
+
+.font-editorial {
+  font-family: 'Playfair Display', serif;
+  font-style: italic;
+}
+
+/* Luxury Gradients for Light Mode */
+.gradient-espresso-text {
+  background: linear-gradient(135deg, #181210 0%, #3D2C24 60%, #755243 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-rose-text {
+  background: linear-gradient(135deg, #4A1624 0%, #852C42 60%, #C46E82 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+.gradient-sage-text {
+  background: linear-gradient(135deg, #1C2B1B 0%, #3D5A3A 60%, #6E916B 100%);
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+}
+
+/* Glassmorphism for Light Mode */
+.glass-light {
+  background: rgba(255, 255, 255, 0.85);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border: 1px solid rgba(210, 195, 180, 0.4);
+}
+
+.glass-rose {
+  background: rgba(255, 245, 247, 0.85);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(236, 194, 203, 0.5);
+}
+
+.glass-sage {
+  background: rgba(246, 250, 244, 0.85);
+  backdrop-filter: blur(14px);
+  border: 1px solid rgba(200, 215, 192, 0.5);
+}
+
+/* Custom Scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+::-webkit-scrollbar-track {
+  background: #F4EDE2;
+}
+::-webkit-scrollbar-thumb {
+  background: #C4AF98;
+  border-radius: 3px;
+}
+::-webkit-scrollbar-thumb:hover {
+  background: #8C735B;
+}
