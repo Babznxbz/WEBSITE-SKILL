@@ -1,0 +1,28 @@
+{
+  "name": "website-skill",
+  "version": "1.0.0",
+  "description": "The all-in-one anti-AI-slop web design and e-commerce skill engine for coding agents (Antigravity, Claude Code, OpenCode, Windsurf, Cursor).",
+  "main": "skills/storefront-forge/SKILL.md",
+  "keywords": [
+    "agents",
+    "skills",
+    "web-design",
+    "e-commerce",
+    "gsap",
+    "lenis",
+    "awwwards",
+    "opencode",
+    "claude-code",
+    "antigravity"
+  ],
+  "author": "Babznxbz",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Babznxbz/WEBSITE-SKILL.git"
+  },
+  "bugs": {
+    "url": "https://github.com/Babznxbz/WEBSITE-SKILL/issues"
+  },
+  "homepage": "https://github.com/Babznxbz/WEBSITE-SKILL#readme"
+}

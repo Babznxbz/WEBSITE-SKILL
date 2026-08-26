@@ -1,22 +1,28 @@
 # ⚡ WEBSITE SKILL (Storefront Forge & Awwwards Engine)
 
-> An all-in-one, anti-AI-slop web design and e-commerce skill for AI coding agents (**Antigravity, Claude Code, Windsurf, Cursor, Gemini CLI, OpenCode**).
+> An all-in-one, anti-AI-slop web design and e-commerce skill for AI coding agents (**Antigravity, OpenCode, Claude Code, Windsurf, Cursor, Gemini CLI**).
 > Systematically builds Dribbble / Awwwards-level websites with GSAP + Lenis scroll animations, Shopify-style shop architecture, dynamic hero patterns, color palette generation, and WCAG contrast verification.
 
 ---
 
-## 🚀 1-Line CLI Install (Works in Claude Code, Antigravity, Windsurf, OpenCode, Cursor)
+## 🚀 1-Line CLI Install (OpenCode, Claude Code, Cursor, Windsurf)
 
-Install all skills or `storefront-forge` directly via CLI:
+Install into your project or globally using `npx skills`:
 
+### 🔷 For OpenCode:
 ```bash
-npx skills add Babznxbz/WEBSITE-SKILL
+npx skills add Babznxbz/WEBSITE-SKILL --agent opencode --yes
+```
+*(Add `-g` for global installation across all projects: `npx skills add Babznxbz/WEBSITE-SKILL -g --agent opencode --yes`)*
+
+### 🧡 For Claude Code:
+```bash
+npx skills add Babznxbz/WEBSITE-SKILL --agent claude-code --yes
 ```
 
-Or install a specific skill:
-
+### 🌐 Universal (All Agents):
 ```bash
-npx skills add Babznxbz/WEBSITE-SKILL@storefront-forge
+npx skills add Babznxbz/WEBSITE-SKILL -g --yes
 ```
 
 ---
@@ -24,7 +30,7 @@ npx skills add Babznxbz/WEBSITE-SKILL@storefront-forge
 ## ⚡ Manual Installation Options
 
 ### Option A: Per-Project Installation
-Copy `.agents` or `skills` into your project root:
+Copy `.agents` or `skills` into your target web project root:
 
 ```bash
 cp -r .agents /path/to/your-project/
@@ -39,11 +45,6 @@ xcopy /E /I skills\storefront-forge %USERPROFILE%\.gemini\config\skills\storefro
 
 # macOS / Linux
 mkdir -p ~/.gemini/config/skills && cp -r skills/storefront-forge ~/.gemini/config/skills/
-```
-
-#### 🌐 For Claude Code:
-```bash
-mkdir -p ~/.claude/skills && cp -r skills/storefront-forge ~/.claude/skills/
 ```
 
 ---
