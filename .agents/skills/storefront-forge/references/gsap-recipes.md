@@ -10,42 +10,68 @@ This is the foundation. Initialize ONCE at the app level.
 
 ```typescript
 // hooks/useLenis.ts
-import { useEffect, useRef } from 'react';
-import Lenis from '@studio-freight/lenis';
+import { useEffect } from 'react';
+import Lenis from 'lenis';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
 gsap.registerPlugin(ScrollTrigger);
 
-export function useLenis() {
-  const lenisRef = useRef<Lenis | null>(null);
+let globalLenisInstance: Lenis | null = null;
 
+// Helper to immediately reset scroll on page transition or category navigation
+export function scrollToTop(immediate = true) {
+  if (globalLenisInstance) {
+    globalLenisInstance.scrollTo(0, { immediate });
+  }
+  window.scrollTo(0, 0);
+  document.documentElement.scrollTop = 0;
+  document.body.scrollTop = 0;
+}
+
+export function useLenis() {
   useEffect(() => {
     // Respect reduced motion
     if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) {
       return;
     }
 
-    const lenis = new Lenis({
-      lerp: 0.1,
-      smoothWheel: true,
-      syncTouch: false, // Don't fight native touch scroll
-    });
+    let lenis: Lenis | null = null;
+    let updateRaf: ((time: number) => void) | null = null;
 
-    lenisRef.current = lenis;
+    try {
+      // Butter-smooth Lenis configuration (Apple & Awwwards tuned lerp physics)
+      lenis = new Lenis({
+        lerp: 0.08,           // Silky smooth interpolation
+        wheelMultiplier: 1.0,  // Natural 1:1 wheel response
+        touchMultiplier: 1.5,
+        smoothWheel: true,
+      });
 
-    // Bridge Lenis → GSAP ScrollTrigger
-    lenis.on('scroll', ScrollTrigger.update);
-    gsap.ticker.add((time) => lenis.raf(time * 1000));
-    gsap.ticker.lagSmoothing(0);
+      globalLenisInstance = lenis;
+
+      // Bridge Lenis → GSAP ScrollTrigger
+      lenis.on('scroll', () => {
+        ScrollTrigger.update();
+      });
+
+      // Frame-rate independent RAF ticker loop
+      updateRaf = (time: number) => {
+        lenis?.raf(time * 1000);
+      };
+
+      gsap.ticker.add(updateRaf);
+      gsap.ticker.lagSmoothing(0);
+    } catch (e) {
+      console.warn('Lenis scroll initialization skipped:', e);
+    }
 
     return () => {
-      lenis.destroy();
-      lenisRef.current = null;
+      if (updateRaf) gsap.ticker.remove(updateRaf);
+      if (lenis) lenis.destroy();
+      globalLenisInstance = null;
     };
   }, []);
-
-  return lenisRef;
 }
 ```
 
@@ -63,6 +89,8 @@ function App() {
 
 The signature effect. Body background smoothly transitions between section colors as user scrolls.
 
+> **CRITICAL**: Do NOT add `transition: background-color` on `body` in CSS. Let GSAP own `body` background color transitions 100% to prevent frame stutters.
+
 ```typescript
 // hooks/useSectionColors.ts
 import { useEffect } from 'react';
@@ -79,14 +107,14 @@ export function useSectionColors() {
 
       ScrollTrigger.create({
         trigger: section,
-        start: 'top 60%',
-        end: 'bottom 40%',
+        start: 'top 50%',
+        end: 'bottom 50%',
         onEnter: () => {
           gsap.to('body', {
             backgroundColor: bgColor,
             color: textColor || undefined,
-            duration: 0.6,
-            ease: 'power2.inOut',
+            duration: 0.7,
+            ease: 'power2.out',
             overwrite: 'auto',
           });
         },
@@ -94,8 +122,8 @@ export function useSectionColors() {
           gsap.to('body', {
             backgroundColor: bgColor,
             color: textColor || undefined,
-            duration: 0.6,
-            ease: 'power2.inOut',
+            duration: 0.7,
+            ease: 'power2.out',
             overwrite: 'auto',
           });
         },
@@ -122,324 +150,62 @@ export function useSectionColors() {
 
 ---
 
-## Recipe 2: Staggered Section Reveal
+## Recipe 2: Staggered Section Reveal with `clearProps`
 
-Elements fade up with stagger as section enters viewport.
+Elements fade up with stagger as section enters viewport. `clearProps: 'transform'` ensures text renders crisp at 100% sharp resolution after reveal.
 
 ```typescript
 // hooks/useReveal.ts
-import { useEffect, useRef } from 'react';
+import { useEffect } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/ScrollTrigger';
 
-export function useReveal(selector = '.reveal-child') {
-  const containerRef = useRef<HTMLDivElement>(null);
-
+export function useReveal() {
   useEffect(() => {
-    if (!containerRef.current) return;
+    const sectionsList = document.querySelectorAll<HTMLElement>('section');
 
-    const children = containerRef.current.querySelectorAll(selector);
-    if (!children.length) return;
-
-    const ctx = gsap.context(() => {
-      gsap.from(children, {
-        y: 50,
-        opacity: 0,
-        stagger: 0.1,
-        duration: 0.7,
-        ease: 'power2.out',
-        scrollTrigger: {
-          trigger: containerRef.current,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-      });
-    }, containerRef);
-
-    return () => ctx.revert();
-  }, [selector]);
-
-  return containerRef;
-}
-```
-
-**Usage**:
-```tsx
-function ShopByCategory() {
-  const ref = useReveal();
-  return (
-    <div ref={ref}>
-      <h2 className="reveal-child">Shop by Category</h2>
-      <div className="grid grid-cols-4 gap-6">
-        <CategoryCard className="reveal-child" />
-        <CategoryCard className="reveal-child" />
-        <CategoryCard className="reveal-child" />
-        <CategoryCard className="reveal-child" />
-      </div>
-    </div>
-  );
-}
-```
-
----
-
-## Recipe 3: Word-by-Word Heading Reveal
-
-Split heading text into words and reveal with vertical stagger.
-
-```typescript
-// utils/splitText.ts
-export function splitIntoWords(text: string): string[] {
-  return text.split(/\s+/).filter(Boolean);
-}
-
-// Component usage:
-function AnimatedHeading({ text, className }: { text: string; className?: string }) {
-  const headingRef = useRef<HTMLHeadingElement>(null);
-  const words = splitIntoWords(text);
-
-  useEffect(() => {
-    if (!headingRef.current) return;
-    const wordEls = headingRef.current.querySelectorAll('.word');
-
-    const ctx = gsap.context(() => {
-      gsap.from(wordEls, {
-        y: 80,
-        opacity: 0,
-        rotationX: -15,
-        stagger: 0.06,
-        duration: 0.8,
-        ease: 'power3.out',
-        scrollTrigger: {
-          trigger: headingRef.current,
-          start: 'top 85%',
-          toggleActions: 'play none none none',
-        },
-      });
+    sectionsList.forEach((section) => {
+      const revealItems = section.querySelectorAll('.product-card, .group, h2, h3');
+      if (revealItems.length > 0) {
+        gsap.fromTo(
+          revealItems,
+          { y: 32, opacity: 0 },
+          {
+            y: 0,
+            opacity: 1,
+            stagger: 0.06,
+            duration: 0.8,
+            ease: 'power3.out',
+            clearProps: 'transform',
+            scrollTrigger: {
+              trigger: section,
+              start: 'top 82%',
+              toggleActions: 'play none none none',
+            },
+          }
+        );
+      }
     });
-
-    return () => ctx.revert();
   }, []);
-
-  return (
-    <h2 ref={headingRef} className={className} aria-label={text}>
-      {words.map((word, i) => (
-        <span key={i} className="word inline-block overflow-hidden">
-          <span className="inline-block">{word}</span>
-        </span>
-      ))}
-    </h2>
-  );
 }
 ```
 
-> **Accessibility**: The `aria-label` on the heading preserves the unsplit text for screen readers. Individual word spans are decorative only.
-
 ---
 
-## Recipe 4: Infinite Marquee / Ticker
-
-Smooth, infinite horizontal scrolling text or logos.
+## Recipe 3: Parallax Image Scrub
 
 ```typescript
-function MarqueeBanner({ items, speed = 30 }: { items: string[]; speed?: number }) {
-  const trackRef = useRef<HTMLDivElement>(null);
-
-  useEffect(() => {
-    if (!trackRef.current) return;
-
-    const track = trackRef.current;
-    const width = track.scrollWidth / 2; // Content is duplicated
-
-    const ctx = gsap.context(() => {
-      gsap.to(track, {
-        x: -width,
-        repeat: -1,
-        duration: speed,
-        ease: 'none',
-        modifiers: {
-          x: gsap.utils.unitize((x) => parseFloat(x) % width),
-        },
-      });
-    });
-
-    return () => ctx.revert();
-  }, [speed]);
-
-  return (
-    <div className="overflow-hidden whitespace-nowrap">
-      <div ref={trackRef} className="inline-flex">
-        {/* Duplicate content for seamless loop */}
-        {[...items, ...items].map((item, i) => (
-          <span key={i} className="mx-8 text-sm uppercase tracking-[0.2em] font-medium opacity-60">
-            {item}
-          </span>
-        ))}
-      </div>
-    </div>
-  );
-}
-```
-
----
-
-## Recipe 5: Pin & Scrub Section
-
-Pin a section while content within it scrubs/animates.
-
-```typescript
-// Pinned promo banner with parallax background
-useEffect(() => {
-  const ctx = gsap.context(() => {
-    // Pin the section
-    ScrollTrigger.create({
-      trigger: '.promo-section',
-      start: 'top top',
-      end: '+=150%',
-      pin: true,
-      pinSpacing: true,
-    });
-
-    // Scrubbed animation within the pinned section
-    gsap.to('.promo-content', {
-      y: -100,
-      opacity: 1,
-      scale: 1,
-      scrollTrigger: {
-        trigger: '.promo-section',
-        start: 'top top',
-        end: '+=100%',
-        scrub: 1,
-      },
-    });
-
-    // Parallax background
-    gsap.to('.promo-bg', {
-      yPercent: -30,
-      scrollTrigger: {
-        trigger: '.promo-section',
-        start: 'top bottom',
-        end: 'bottom top',
-        scrub: true,
-      },
-    });
-  });
-
-  return () => ctx.revert();
-}, []);
-```
-
----
-
-## Recipe 6: Horizontal Scroll Gallery
-
-Turn vertical scroll into horizontal movement for a product showcase.
-
-```typescript
-useEffect(() => {
-  const container = document.querySelector('.horizontal-scroll');
-  const track = document.querySelector('.horizontal-track');
-  if (!container || !track) return;
-
-  const ctx = gsap.context(() => {
-    gsap.to(track, {
-      x: () => -(track.scrollWidth - window.innerWidth),
-      ease: 'none',
-      scrollTrigger: {
-        trigger: container,
-        pin: true,
-        scrub: 1,
-        end: () => '+=' + (track.scrollWidth - window.innerWidth),
-        invalidateOnRefresh: true,
-      },
-    });
-  });
-
-  return () => ctx.revert();
-}, []);
-```
-
-**JSX**:
-```tsx
-<section className="horizontal-scroll overflow-hidden">
-  <div className="horizontal-track flex gap-8 px-8" style={{ width: 'max-content' }}>
-    {products.map((p) => <ProductCard key={p.id} product={p} />)}
-  </div>
-</section>
-```
-
----
-
-## Recipe 7: Footer Reveal from Behind
-
-Footer appears to be "behind" the content, revealed as content scrolls away.
-
-```typescript
-useEffect(() => {
-  const ctx = gsap.context(() => {
-    ScrollTrigger.create({
-      trigger: 'footer',
-      start: 'top bottom',
-      end: 'bottom bottom',
-      toggleClass: { targets: '.main-content', className: 'rounded-b-3xl' },
-    });
-  });
-
-  return () => ctx.revert();
-}, []);
-```
-
-**CSS**:
-```css
-footer {
-  position: sticky;
-  bottom: 0;
-  z-index: -1; /* Behind main content */
-}
-.main-content {
-  position: relative;
-  z-index: 1;
-  background: var(--bg-primary);
-  transition: border-radius 0.3s ease;
-}
-```
-
----
-
-## Recipe 8: Product Card Hover Animation
-
-CSS-only for performance. No GSAP needed for hover states.
-
-```css
-.product-card {
-  --lift: 0px;
-  --img-scale: 1;
-  transition: transform 0.4s cubic-bezier(0.2, 0, 0, 1),
-              box-shadow 0.4s cubic-bezier(0.2, 0, 0, 1);
-}
-
-.product-card:hover {
-  --lift: -4px;
-  --img-scale: 1.05;
-  transform: translateY(var(--lift));
-  box-shadow: var(--shadow-lg);
-}
-
-.product-card .product-image {
-  transition: transform 0.6s cubic-bezier(0.2, 0, 0, 1);
-  transform: scale(var(--img-scale));
-}
-
-.product-card .quick-view-btn {
-  opacity: 0;
-  transform: translateY(8px);
-  transition: opacity 0.3s, transform 0.3s;
-}
-
-.product-card:hover .quick-view-btn {
-  opacity: 1;
-  transform: translateY(0);
-}
+// Smooth 1.2s lag scrub on hero or promo image
+gsap.to('.promo-parallax-img', {
+  yPercent: -12,
+  ease: 'none',
+  scrollTrigger: {
+    trigger: '.promo-parallax-img',
+    start: 'top bottom',
+    end: 'bottom top',
+    scrub: 1.2,
+  },
+});
 ```
 
 ---
@@ -452,29 +218,7 @@ Always wrap GSAP setup with this check:
 const prefersReducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
 if (prefersReducedMotion) {
-  // Set all animated elements to their final state
-  gsap.set('.reveal-child', { opacity: 1, y: 0 });
-  gsap.set('.hero-heading .word', { opacity: 1, y: 0 });
-  // Do NOT initialize Lenis
-  // Do NOT create ScrollTrigger instances
-  return;
+  gsap.globalTimeline.progress(1);
+  ScrollTrigger.getAll().forEach(t => t.kill());
 }
 ```
-
----
-
-## Cleanup Pattern
-
-Every component using GSAP MUST clean up:
-
-```typescript
-useEffect(() => {
-  const ctx = gsap.context(() => {
-    // All GSAP animations here
-  }, containerRef); // Scope to component
-
-  return () => ctx.revert(); // Kills all animations + ScrollTriggers in scope
-}, []);
-```
-
-This prevents memory leaks and conflicting animations on route changes.

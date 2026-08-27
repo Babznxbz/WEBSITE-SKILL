@@ -73,6 +73,12 @@
       "skillPath": "skills/review-animations/SKILL.md",
       "computedHash": "6f8d633d7884c1390eff7af4bfaf7a450e798f117e1d49a555e00819dc877f64"
     },
+    "storefront-forge": {
+      "source": "Babznxbz/WEBSITE-SKILL",
+      "sourceType": "github",
+      "skillPath": "skills/storefront-forge/SKILL.md",
+      "computedHash": "47b17765aa9c2a6c0c2bab02d868cf186212682576fff63eccd4e92c10801a1a"
+    },
     "write-swift": {
       "source": "emilkowalski/skills",
       "sourceType": "github",
